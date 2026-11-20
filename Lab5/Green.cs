@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Lab5
@@ -10,7 +10,21 @@ namespace Lab5
             int[] answer = null;
 
             // code here
-
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            answer = new int[r];
+            for (int i = 0; i < r; i++)
+            {
+                int minindex = 0;
+                for (int j = 0; j < c; j++)
+                {
+                    if (matrix[i, j] < matrix[i, minindex])
+                    {
+                        minindex = j;
+                    }
+                }
+                answer[i] = minindex;
+            }
             // end
 
             return answer;
@@ -19,7 +33,30 @@ namespace Lab5
         {
 
             // code here
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            for (int i = 0; i < r; i++)
+            {
+                int maxIndex = 0;
+                for (int j = 0; j < c; ++j)
+                {
+                    if (matrix[i, j] > matrix[i, maxIndex])
+                    {
+                        maxIndex = j;
 
+                    }
+                }
+                int max = matrix[i, maxIndex];
+                if (max ==0) continue;
+                for (int j = 0; j < maxIndex; j++)
+                {
+                    if (matrix[i, j] < 0)
+                    {
+                        matrix[i, j] = (int)Math.Floor((double)matrix[i, j] / max);
+                    }
+                }
+
+            }
             // end
 
         }
@@ -27,6 +64,24 @@ namespace Lab5
         {
 
             // code here
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            if (k < 0 || k >= c || r != c) return;
+            int maxIndex = 0;
+            for (int i = 0; i < r; i++)
+            {
+                if (matrix[i, i] > matrix[maxIndex, maxIndex])
+                {
+                    maxIndex = i;
+                }
+            }
+            if (maxIndex == k) return;
+            for (int i = 0; i < r; i++)
+            {
+                int temp = matrix[i, k];
+                matrix[i, k] = matrix[i, maxIndex];
+                matrix[i, maxIndex] = temp;
+            }
 
             // end
 
@@ -35,7 +90,25 @@ namespace Lab5
         {
 
             // code here
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            if (r != c) return;
 
+            int diagpos = 0;
+            for (int i = 0; i < r; i++)
+            {
+                if (matrix[i,i] > matrix[diagpos, diagpos])
+                {
+                    diagpos = i;
+                }
+            }
+            for (int j = 0; j < r; j++)
+            {
+                int temp = matrix[diagpos, j];
+                matrix[diagpos, j] = matrix[j, diagpos];
+                matrix[j, diagpos] = temp;
+
+            }
             // end
 
         }
@@ -44,7 +117,41 @@ namespace Lab5
             int[,] answer = null;
 
             // code here
-
+            if (matrix == null) return new int[0, 0];
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            if (r == 0 || c == 0) return matrix;
+            int maxsum = -1;
+            int rd = 0;
+            
+            for (int i = 0; i < r; i++)
+            {
+                int sum = 0;
+                for (int j = 0; j < c; j++)
+                {
+                    if (matrix[i, j] > 0)
+                        sum += matrix[i, j];
+                }
+                if (sum > maxsum)
+                {
+                    maxsum = sum;
+                    rd = i;
+                }
+            
+            }
+            int[,] newmatrix = new int[r - 1, c];
+            int newrow = 0;
+            for (int i = 0; i < r; i++)
+            {
+                if (i == rd) continue;
+                for (int j = 0; j < c; j++)
+                {
+                    newmatrix[newrow, j] = matrix[i, j];
+                    
+                }
+                newrow++;
+            } 
+            answer = newmatrix;
             // end
 
             return answer;
