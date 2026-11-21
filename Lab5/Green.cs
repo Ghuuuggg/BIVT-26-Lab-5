@@ -160,7 +160,45 @@ namespace Lab5
         {
 
             // code here
-
+            if (matrix == null) return;
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            if ( r == 0 || c == 0 ) return;
+            int minnegcount = c + 1;
+            int minnegrow = 0;
+            int maxnegcount = -1;
+            int maxnegrow = 0;
+            for (int i = 0; i < r; i++)
+            {
+                int count = 0;
+                for (int j = 0; j < c; j++)
+                {
+                    if (matrix[i, j] < 0)
+                    {
+                        count++;
+                    }
+                }
+                if (count < minnegcount)
+                {
+                    minnegcount = count;
+                    minnegrow = i;
+                }
+                if (count > maxnegcount)
+                {
+                    maxnegcount = count;
+                    maxnegrow = i;
+                }
+            }
+                if (minnegrow != maxnegrow)
+                {
+                    for (int j = 0; j < c; j++)
+                    {
+                        int temp = matrix[minnegrow , j];
+                        matrix[minnegrow, j] = matrix[maxnegrow, j];
+                        matrix[maxnegrow, j ] = temp;
+                    }
+                }
+            
             // end
 
         }
@@ -169,7 +207,42 @@ namespace Lab5
             int[,] answer = null;
 
             // code here
+            if (matrix == null) return new int[0,0];
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+            if (c == 0 || r == 0 || array == null || array.Length != r) return matrix;
+            int minval = matrix[0,0];
+            int mincol= 0;
+            for (int i = 0; i < r; i++)
+            {
+               
+               
+                
+                    for (int j = 0; j < c; j++)
+                    {
+                        if (matrix[i, j] < minval)
+                        {
+                            minval = matrix[i, j];
+                            mincol = j;
+                        }
+                    }
+                
+            }
+            int[,] newmatrix = new int[r, c + 1];
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j <= mincol; j++)
+                {
+                    newmatrix[i,j] = matrix[i, j]; 
+                }
+                newmatrix[i, mincol + 1] = array[i]; 
 
+                for (int j = mincol + 1; j < c; j++) 
+                {
+                    newmatrix[i, j + 1] = matrix[i, j]; 
+                }
+            }
+            answer  = newmatrix;
             // end
 
             return answer;
