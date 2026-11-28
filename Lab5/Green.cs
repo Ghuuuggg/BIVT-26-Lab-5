@@ -251,7 +251,44 @@ namespace Lab5
         {
 
             // code here
+            if (matrix == null || matrix.GetLength(0) == 0)
+                return;
 
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+
+            for (int j = 0; j < cols; j++)
+            {
+                int positive = 0;
+                int negative = 0;
+
+                int max = matrix[0, j];
+                int maxRow = 0;
+
+                for (int i = 0; i < rows; i++)
+                {
+                    if (matrix[i, j] > 0)
+                        positive++;
+
+                    if (matrix[i, j] < 0)
+                        negative++;
+
+                    if (matrix[i, j] > max)
+                    {
+                        max = matrix[i, j];
+                        maxRow = i;
+                    }
+                }
+
+                if (positive > negative)
+                {
+                    matrix[maxRow, j] = 0;
+                }
+                else if (negative > positive)
+                {
+                    matrix[maxRow, j] = maxRow;
+                }
+            }
             // end
 
         }
@@ -259,7 +296,20 @@ namespace Lab5
         {
 
             // code here
+            if (matrix == null) return;
 
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+
+            if (r == 0 || c == 0 || r != c) return;
+
+            for (int k = 0; k < r; k++)
+            {
+                matrix[0, k] = 0;         
+                matrix[r - 1, k] = 0;  
+                matrix[k, 0] = 0;         
+                matrix[k, r - 1] = 0;    
+            }
             // end
 
         }
@@ -268,16 +318,79 @@ namespace Lab5
             int[] A = null, B = null;
 
             // code here
+            if (matrix == null)
+            {
+                return (A, B);
+            }
 
+            int r = matrix.GetLength(0);
+            int c = matrix.GetLength(1);
+
+            if (r == 0 || c == 0 || r != c)
+            {
+                return (A, B);
+            }
+
+            int upperSize = r * (r + 1) / 2;
+            int lowerSize = r * (r - 1) / 2;
+
+            A = new int[upperSize];
+            B = new int[lowerSize];
+
+            int indexA = 0;
+            int indexB = 0;
+
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
+                    if (j >= i)
+                    {
+                        A[indexA] = matrix[i, j];
+                        indexA++;
+                    }
+                    else
+                    {
+                        B[indexB] = matrix[i, j];
+                        indexB++;
+                    }
+                }
+            }
             // end
-
             return (A, B);
         }
         public void Task11(int[,] matrix)
         {
 
             // code here
+            if (matrix == null)
+                return;
 
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+
+            for (int j = 0; j < cols; j++)
+            {
+                for (int pass = 0; pass < rows - 1; pass++)
+                {
+                    for (int i = 0; i < rows - 1 - pass; i++)
+                    {
+                        bool swap;
+
+                        if (j % 2 == 0)
+                            swap = matrix[i, j] < matrix[i + 1, j];
+                        else
+                            swap = matrix[i, j] > matrix[i + 1, j];
+
+                        if (swap)
+                        {
+                            int temp = matrix[i, j];
+                            matrix[i, j] = matrix[i + 1, j];
+                            matrix[i + 1, j] = temp;
+                        }
+                    }
+                }
+            }
             // end
 
         }
@@ -285,7 +398,48 @@ namespace Lab5
         {
 
             // code here
+            if (array == null)
+                return;
 
+            for (int i = 1; i < array.Length; i++)
+            {
+                int[] current = array[i];
+
+                int currentLength = current == null ? 0 : current.Length;
+                long currentSum = 0;
+
+                if (current != null)
+                {
+                    for (int j = 0; j < current.Length; j++)
+                        currentSum += current[j];
+                }
+
+                int k = i - 1;
+
+                while (k >= 0)
+                {
+                    int previousLength = array[k] == null ? 0 : array[k].Length;
+                    long previousSum = 0;
+
+                    if (array[k] != null)
+                    {
+                        for (int j = 0; j < array[k].Length; j++)
+                            previousSum += array[k][j];
+                    }
+
+                    if (previousLength > currentLength)
+                        break;
+
+                    if (previousLength == currentLength &&
+                        previousSum >= currentSum)
+                        break;
+
+                    array[k + 1] = array[k];
+                    k--;
+                }
+
+                array[k + 1] = current;
+            }
             // end
 
         }
